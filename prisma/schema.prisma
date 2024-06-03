@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// model User {
+//   id    String @id @default(cuid())
+//   name  String
+//   email String @unique
+// }
+
+model Workout {
+  id               String             @id @default(cuid())
+  date             DateTime           @default(now())
+  exerciseInsances ExerciseInstance[]
+}
+
+model ExerciseInstance {
+  id             String       @id @default(cuid())
+  order          Int
+  exerciseTypeId String
+  exerciseType   ExerciseType @relation(fields: [exerciseTypeId], references: [id])
+  Workout        Workout?     @relation(fields: [workoutId], references: [id])
+  workoutId      String?
+}
+
+model LoadType {
+  id                 String         @id @default(cuid())
+  areBothSignificant Boolean
+  firstUnit          String
+  secondUnit         String?
+  exerciseType       ExerciseType[]
+}
+
+model Category {
+  id           String         @id @default(cuid())
+  name         String         @unique
+  exerciseType ExerciseType[]
+}
+
+model ExerciseType {
+  id                String             @id @default(cuid())
+  loadingTypeId     String
+  loadingType       LoadType           @relation(fields: [loadingTypeId], references: [id])
+  categoryId        String
+  category          Category           @relation(fields: [categoryId], references: [id])
+  personalBest      String
+  exerciseInstances ExerciseInstance[]
+}
+
+model ExerciseSet {
+  id           String  @id @default(cuid())
+  order        Int
+  wasCompleted Boolean
+  loadId       String
+  load         String
+}

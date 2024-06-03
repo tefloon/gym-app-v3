@@ -5,15 +5,25 @@ import { Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
 import { createId } from "@paralleldrive/cuid2";
 
-import {
-  Workout as PrismaWorkout,
-  Category as PrismaCategory,
-  LoadType as PrismaLoadType,
-  ExerciseType as PrismaExerciseType,
-  ExerciseSet as PrismaExerciseSet,
-  ExerciseInstance as PrismaExerciseInstance,
-} from "@prisma/client";
 import { revalidatePath } from "next/cache";
+
+const translateError = (error: Prisma.PrismaClientKnownRequestError) => {
+  let message = "";
+
+  switch (error.code) {
+    case "P2002":
+      message = `Duplicate ${
+        error.meta ? `of ${error.meta.modelName}` : ""
+      } found.`;
+      break;
+
+    default:
+      message = `Something went wrong.`;
+      break;
+  }
+
+  return message;
+};
 
 export const handleCreateCategory = async (categoryName: string) => {
   const categoryId = createId();
@@ -27,9 +37,16 @@ export const handleCreateCategory = async (categoryName: string) => {
     });
 
     revalidatePath("/");
+    return {
+      status: 200,
+      message: "OK",
+    };
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      return e.message;
+      return {
+        status: 400,
+        message: translateError(e),
+      };
     }
     throw e;
   }

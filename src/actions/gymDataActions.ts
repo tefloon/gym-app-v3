@@ -29,7 +29,7 @@ export const handleCreateCategory = async (categoryName: string) => {
     revalidatePath("/");
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      return e.message
+      return e.message;
     }
     throw e;
   }
@@ -37,7 +37,7 @@ export const handleCreateCategory = async (categoryName: string) => {
 
 export const handleReturnCategories = async () => {
   const categories = await prisma.category.findMany();
-
+  revalidatePath("/");
   return categories;
 };
 

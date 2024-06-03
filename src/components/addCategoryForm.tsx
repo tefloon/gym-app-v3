@@ -1,32 +1,18 @@
 "use client";
 
-import { Prisma } from "@prisma/client";
 import { useRef, useTransition } from "react";
+import { handleCreateCategory } from "@/actions/gymDataActions";
 
-type status = {
-  statusCode: number;
-  errorMessage?: string;
-};
-
-type AddCategoryFormProps = {
-  addCategoryHandler: (newCatName: string) => Promise<string | undefined>;
-};
-
-export default function AddCategoryForm({
-  addCategoryHandler,
-}: AddCategoryFormProps) {
+export default function AddCategoryForm() {
   const [pending, startTransition] = useTransition();
 
   const inputRef = useRef<HTMLInputElement>(null);
-  if (inputRef.current) {
-    return;
-  }
 
   const handleAddCategory = () => {
     startTransition(async () => {
       try {
         if (inputRef.current) {
-          const res = await addCategoryHandler(inputRef.current.value);
+          const res = await handleCreateCategory(inputRef.current.value);
           if (res) console.log(res);
         }
       } catch (e) {

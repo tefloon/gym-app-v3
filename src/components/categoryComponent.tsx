@@ -145,23 +145,24 @@ export default function CategoryComponent() {
         </ol>
       ) : (
         // Put skeleton here
-        <span>Nothing to see here...</span>
-        // <ol className="flex flex-col gap-2 ">
-        //   {[1, 2, 3].map((id) => (
-        //     <motion.li
-        //       className="flex min-w-[300px] min-h-8 flex-row bg-neutral-700 rounded hover:bg-neutral-800 cursor-pointer justify-between p-2"
-        //       key={id}
-        //       animate={{ opacity: 1 }}
-        //       exit={{ opacity: 0 }}
-        //       transition={{
-        //         ease: "easeInOut",
-        //         duration: 0.5,
-        //       }}
-        //     >
-        //       <span className="pr-5"></span>
-        //     </motion.li>
-        //   ))}
-        // </ol>
+        <motion.ol
+          className="flex flex-col gap-2 "
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.2,
+          }}
+        >
+          {[1, 2, 3].map((id) => (
+            <motion.li
+              className="flex min-w-[300px] min-h-8 flex-row bg-neutral-700 rounded hover:bg-neutral-800 cursor-pointer justify-between p-2"
+              key={id}
+            >
+              <span className="pr-5"></span>
+            </motion.li>
+          ))}
+        </motion.ol>
       )}
     </div>
   );

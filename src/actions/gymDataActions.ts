@@ -39,7 +39,7 @@ export const handleCreateCategory = async (
       },
     });
 
-    revalidatePath("/categories");
+    // revalidatePath("/categories");
     return {
       status: 200,
       message: "OK",
@@ -68,7 +68,7 @@ export const handleDeleteCategoryById = async (id: string) => {
         id: id,
       },
     });
-    revalidatePath("/categories");
+    // revalidatePath("/categories");
     return {
       status: 200,
       message: "OK",

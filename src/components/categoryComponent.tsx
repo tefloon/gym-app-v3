@@ -10,6 +10,7 @@ import {
 import {
   handleCreateCategory,
   handleDeleteCategoryById,
+  handleReturnCategories,
 } from "@/actions/gymDataActions";
 import { Category as PrismaCategory } from "@prisma/client";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,23 +20,38 @@ type CategoryListProps = {
   categories?: PrismaCategory[];
 };
 
-export default function CategoryComponent({ categories }: CategoryListProps) {
+export default function CategoryComponent() {
+  console.log("Child rendered");
+
   const [pending, startTransition] = useTransition();
 
-  const [optimisticCat, setOptimisticCat] = useOptimistic(categories);
+  const [cats, setCats] = useState<PrismaCategory[]>();
+  const [optimisticCat, setOptimisticCat] = useOptimistic(cats);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log("Fetching categories");
+      const response = await handleReturnCategories();
+      setCats(response);
+      // setOptimisticCat(response);
+    }
+    fetchData();
+    inputRef.current?.focus();
+  }, []);
 
   const handleDeleteClick = (id: string) => {
     startTransition(async () => {
       setOptimisticCat((prev) => prev?.filter((c) => c.id !== id));
-      await handleDeleteCategoryById(id);
+      const res = await handleDeleteCategoryById(id);
+      if (res.status !== 200) {
+        console.log(res.message);
+      }
+      const response = await handleReturnCategories();
+      setCats(response);
     });
   };
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  });
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -55,19 +71,19 @@ export default function CategoryComponent({ categories }: CategoryListProps) {
       optimisticCat
         ? setOptimisticCat((prev) => [...(prev as PrismaCategory[]), newCat])
         : setOptimisticCat([newCat]);
+      if (!inputRef.current) return;
       try {
-        if (inputRef.current) {
-          const res = await handleCreateCategory(inputRef.current.value);
-          if (res.status !== 200) {
-            console.log(res.message);
-          }
-
-          inputRef.current.value = "";
-          inputRef.current.focus();
+        const res = await handleCreateCategory(inputRef.current.value);
+        if (res.status !== 200) {
+          console.log(res.message);
         }
       } catch (e) {
         console.error(e);
       }
+      const response = await handleReturnCategories();
+      setCats(response);
+      inputRef.current.value = "";
+      inputRef.current.focus();
     });
   };
 
@@ -117,6 +133,7 @@ export default function CategoryComponent({ categories }: CategoryListProps) {
           </ol>
         </AnimatePresence>
       ) : (
+        // Put skeleton here
         <div>Nothing to show here...</div>
       )}
     </div>

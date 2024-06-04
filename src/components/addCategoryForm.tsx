@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useTransition } from "react";
 import { handleCreateCategory } from "@/actions/gymDataActions";
-import { motion } from "framer-motion";
 
 export default function AddCategoryForm() {
   const [pending, startTransition] = useTransition();

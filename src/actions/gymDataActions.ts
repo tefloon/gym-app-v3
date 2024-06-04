@@ -25,26 +25,31 @@ const translateError = (error: Prisma.PrismaClientKnownRequestError) => {
   return message;
 };
 
-export const handleCreateCategory = async (
-  categoryName: string,
-  id?: string
-) => {
+type CreateCategoryProps = {
+  name: string;
+  id?: string;
+};
+
+export const handleCreateCategory = async ({
+  name,
+  id,
+}: CreateCategoryProps) => {
   const categoryId = id ? id : createId();
 
   try {
     const createCategory = await prisma.category.create({
       data: {
         id: categoryId,
-        name: categoryName,
+        name: name,
       },
     });
 
-    // revalidatePath("/categories");
     return {
       status: 200,
       message: "OK",
     };
   } catch (e) {
+    revalidatePath("/categories");
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       return {
         status: 400,
@@ -57,7 +62,6 @@ export const handleCreateCategory = async (
 
 export const handleReturnCategories = async () => {
   const categories = await prisma.category.findMany();
-  revalidatePath("/");
   return categories;
 };
 
@@ -68,12 +72,12 @@ export const handleDeleteCategoryById = async (id: string) => {
         id: id,
       },
     });
-    // revalidatePath("/categories");
     return {
       status: 200,
       message: "OK",
     };
   } catch (e) {
+    revalidatePath("/categories");
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       return {
         status: 400,

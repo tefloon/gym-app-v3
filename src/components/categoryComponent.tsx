@@ -64,16 +64,16 @@ export default function CategoryComponent() {
     if (!inputRef.current) return;
 
     const categoryId = createId();
-
-    const newCat = { id: categoryId, name: inputRef.current.value };
+    const newCat = { name: inputRef.current.value, id: categoryId };
 
     startTransition(async () => {
       optimisticCat
         ? setOptimisticCat((prev) => [...(prev as PrismaCategory[]), newCat])
         : setOptimisticCat([newCat]);
+
       if (!inputRef.current) return;
       try {
-        const res = await handleCreateCategory(inputRef.current.value);
+        const res = await handleCreateCategory(newCat);
         if (res.status !== 200) {
           console.log(res.message);
         }

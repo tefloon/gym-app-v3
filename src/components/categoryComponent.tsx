@@ -16,9 +16,9 @@ import { Category as PrismaCategory } from "@prisma/client";
 import { AnimatePresence, motion } from "framer-motion";
 import { createId } from "@paralleldrive/cuid2";
 
-type CategoryListProps = {
-  categories?: PrismaCategory[];
-};
+// type CategoryCompProps = {
+//   categories: PrismaCategory[]
+// }
 
 export default function CategoryComponent() {
   console.log("Child rendered");
@@ -26,7 +26,7 @@ export default function CategoryComponent() {
   const [pending, startTransition] = useTransition();
 
   const [cats, setCats] = useState<PrismaCategory[]>();
-  const [optimisticCat, setOptimisticCat] = useOptimistic(cats);
+  const [optimisticCats, setOptimisticCats] = useOptimistic(cats);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,7 +43,7 @@ export default function CategoryComponent() {
 
   const handleDeleteClick = (id: string) => {
     startTransition(async () => {
-      setOptimisticCat((prev) => prev?.filter((c) => c.id !== id));
+      setOptimisticCats((prev) => prev?.filter((c) => c.id !== id));
       const res = await handleDeleteCategoryById(id);
       if (res.status !== 200) {
         console.log(res.message);
@@ -67,9 +67,9 @@ export default function CategoryComponent() {
     const newCat = { name: inputRef.current.value, id: categoryId };
 
     startTransition(async () => {
-      optimisticCat
-        ? setOptimisticCat((prev) => [...(prev as PrismaCategory[]), newCat])
-        : setOptimisticCat([newCat]);
+      optimisticCats
+        ? setOptimisticCats((prev) => [...(prev as PrismaCategory[]), newCat])
+        : setOptimisticCats([newCat]);
 
       if (!inputRef.current) return;
       try {
@@ -82,6 +82,10 @@ export default function CategoryComponent() {
       }
       const response = await handleReturnCategories();
       setCats(response);
+      // setOptimisticCats((prev) =>
+      //   [...(prev as PrismaCategory[])].filter((item) => item.id !== categoryId)
+      // );
+
       inputRef.current.value = "";
       inputRef.current.focus();
     });
@@ -110,14 +114,14 @@ export default function CategoryComponent() {
           Dodaj
         </button>
       </div>
-      {optimisticCat ? (
+      {optimisticCats ? (
         <AnimatePresence presenceAffectsLayout initial={false}>
           <ol className="flex flex-col gap-2 ">
-            {optimisticCat.map((cat, id) => (
+            {optimisticCats.map((cat, id) => (
               <motion.li
                 layout
                 className="flex min-w-[300px] flex-row bg-neutral-700 rounded hover:bg-neutral-800 cursor-pointer justify-between p-2"
-                key={cat.id}
+                key={id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

@@ -35,6 +35,7 @@ export const handleCreateCategory = async ({
   id,
 }: CreateCategoryProps) => {
   const categoryId = id ? id : createId();
+  // const categoryId = createId();
 
   try {
     const createCategory = await prisma.category.create({

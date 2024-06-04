@@ -13,7 +13,7 @@ import {
   handleReturnCategories,
 } from "@/actions/gymDataActions";
 import { Category as PrismaCategory } from "@prisma/client";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { createId } from "@paralleldrive/cuid2";
 
 // type CategoryCompProps = {
@@ -23,6 +23,7 @@ import { createId } from "@paralleldrive/cuid2";
 export default function CategoryComponent() {
   console.log("Child rendered");
 
+  const [isLoading, startLoading] = useTransition();
   const [pending, startTransition] = useTransition();
 
   const [cats, setCats] = useState<PrismaCategory[]>();
@@ -31,15 +32,19 @@ export default function CategoryComponent() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    startLoading(async () => {
       console.log("Fetching categories");
       const response = await handleReturnCategories();
       setCats(response);
-      // setOptimisticCat(response);
-    }
-    fetchData();
-    inputRef.current?.focus();
+    });
   }, []);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  });
+
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleDeleteClick = (id: string) => {
     startTransition(async () => {
@@ -114,31 +119,49 @@ export default function CategoryComponent() {
           Dodaj
         </button>
       </div>
-      {optimisticCats ? (
-        <AnimatePresence presenceAffectsLayout initial={false}>
-          <ol className="flex flex-col gap-2 ">
-            {optimisticCats.map((cat, id) => (
-              <motion.li
-                layout
-                className="flex min-w-[300px] flex-row bg-neutral-700 rounded hover:bg-neutral-800 cursor-pointer justify-between p-2"
-                key={id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  ease: "easeInOut",
-                  duration: 0.1,
-                }}
-              >
-                <span className="pr-5">{cat.name}</span>
-                <button onClick={() => handleDeleteClick(cat.id)}>❌</button>
-              </motion.li>
-            ))}
-          </ol>
-        </AnimatePresence>
+      {optimisticCats && !isLoading ? (
+        <ol className="flex flex-col gap-2 ">
+          <LayoutGroup>
+            <AnimatePresence presenceAffectsLayout>
+              {optimisticCats.map((cat, id) => (
+                <motion.li
+                  layout
+                  className="flex min-w-[300px] flex-row bg-neutral-700 rounded hover:bg-neutral-800 cursor-pointer justify-between p-2"
+                  key={id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{
+                    ease: "easeInOut",
+                    duration: 0.2,
+                  }}
+                >
+                  <span className="pr-5">{cat.name}</span>
+                  <button onClick={() => handleDeleteClick(cat.id)}>❌</button>
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </LayoutGroup>
+        </ol>
       ) : (
         // Put skeleton here
-        <div>Nothing to show here...</div>
+        <span>Nothing to see here...</span>
+        // <ol className="flex flex-col gap-2 ">
+        //   {[1, 2, 3].map((id) => (
+        //     <motion.li
+        //       className="flex min-w-[300px] min-h-8 flex-row bg-neutral-700 rounded hover:bg-neutral-800 cursor-pointer justify-between p-2"
+        //       key={id}
+        //       animate={{ opacity: 1 }}
+        //       exit={{ opacity: 0 }}
+        //       transition={{
+        //         ease: "easeInOut",
+        //         duration: 0.5,
+        //       }}
+        //     >
+        //       <span className="pr-5"></span>
+        //     </motion.li>
+        //   ))}
+        // </ol>
       )}
     </div>
   );

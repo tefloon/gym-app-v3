@@ -13,14 +13,11 @@ import {
   handleReturnCategories,
 } from "@/actions/gymDataActions";
 import { Category as PrismaCategory } from "@prisma/client";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { createId } from "@paralleldrive/cuid2";
 import CategoryList from "./categoryList";
 import CategoryForm from "./categoryForm";
 
-export default function CategoryComponent() {
-  console.log("Child rendered");
-
+export default function CategoriesManager() {
   const [isLoading, startLoading] = useTransition();
   const [pending, startTransition] = useTransition();
 
@@ -29,6 +26,7 @@ export default function CategoryComponent() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Fetch the initial data
   useEffect(() => {
     startLoading(async () => {
       console.log("Fetching categories");
@@ -37,6 +35,7 @@ export default function CategoryComponent() {
     });
   }, []);
 
+  // Make sure the input is focused on every reload
   useEffect(() => {
     inputRef.current?.focus();
   });
@@ -82,7 +81,7 @@ export default function CategoryComponent() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 ">
       <CategoryForm
         inputRef={inputRef}
         pending={pending}

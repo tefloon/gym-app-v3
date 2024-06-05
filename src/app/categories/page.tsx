@@ -1,5 +1,5 @@
 import { handleReturnCategories } from "@/actions/gymDataActions";
-import CategoryComponent from "@/components/categoryBrowser/categoryComponent";
+import CategoriesManager from "@/components/categoryManager/categoriesManager";
 
 export default async function Categories() {
   console.log("GrandParent rendered");
@@ -7,8 +7,8 @@ export default async function Categories() {
   // const categories = await handleReturnCategories();
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-4 p-12">
-      <CategoryComponent />
+    <main className="flex flex-col items-center gap-4 p-12">
+      <CategoriesManager />
     </main>
   );
 }

@@ -17,18 +17,19 @@ datasource db {
 // }
 
 model Workout {
-  id               String             @id @default(cuid())
-  date             DateTime           @default(now())
-  exerciseInsances ExerciseInstance[]
+  id                String             @id @default(cuid())
+  date              DateTime           @default(now())
+  exerciseInstances ExerciseInstance[]
 }
 
 model ExerciseInstance {
-  id             String       @id @default(cuid())
+  id             String        @id @default(cuid())
   order          Int
   exerciseTypeId String
-  exerciseType   ExerciseType @relation(fields: [exerciseTypeId], references: [id])
-  Workout        Workout?     @relation(fields: [workoutId], references: [id])
+  exerciseType   ExerciseType  @relation(fields: [exerciseTypeId], references: [id])
+  workout        Workout?      @relation(fields: [workoutId], references: [id])
   workoutId      String?
+  sets           ExerciseSet[]
 }
 
 model LoadType {
@@ -56,9 +57,10 @@ model ExerciseType {
 }
 
 model ExerciseSet {
-  id           String  @id @default(cuid())
-  order        Int
-  wasCompleted Boolean
-  loadId       String
-  load         String
+  id                 String           @id @default(cuid())
+  order              Int
+  wasCompleted       Boolean
+  load               String
+  exerciseInstance   ExerciseInstance @relation(fields: [exerciseInstanceId], references: [id])
+  exerciseInstanceId String
 }

@@ -1,5 +1,3 @@
-import CategoryComponent from "@/components/categoryBrowser/categoryComponent";
-
 export default function Home() {
   return (
     <main

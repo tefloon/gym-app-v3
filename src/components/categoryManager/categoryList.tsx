@@ -4,13 +4,22 @@ import React from "react";
 
 type CategoryListProps = {
   isLoading: boolean;
-  handleDeleteClick: (id: string) => void
+  handleDeleteClick: (id: string) => void;
   optimisticCats?: PrismaCategory[];
 };
 
+// ================================================================
+//
+// TODO:
+// - Fix the aniumation to correctly move up upon deletion
+//   https://framermotionexamples.com/example/swipe-to-delete
+//
+// - Analyze the number of re-renders in prod
+//
+// ================================================================
 export default function CategoryList({
   isLoading,
-	handleDeleteClick,
+  handleDeleteClick,
   optimisticCats,
 }: CategoryListProps) {
   return (
@@ -40,7 +49,6 @@ export default function CategoryList({
           </LayoutGroup>
         </ol>
       ) : (
-        // Put skeleton here
         <motion.ol
           className="flex flex-col gap-2 "
           animate={{ opacity: 1 }}

@@ -5,11 +5,13 @@ import AddExercise from "./addExercise";
 type AddExerciseModal = {
   isOpen: boolean;
   onClose: () => void;
+  mode: "add" | "update"
 };
 
 export default function AddExerciseModal({
   isOpen,
   onClose,
+  mode
 }: AddExerciseModal) {
   return (
     <motion.div
@@ -20,11 +22,8 @@ export default function AddExerciseModal({
       className="fixed top-0 right-0 h-full min-w-[500px] bg-slate-800/75 shadow-lg z-50 rounded-l-lg"
     >
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-4 text-center">Add Exercise</h2>
+        <h2 className="text-xl font-bold mb-4 text-center">{mode === "add" ? "Add Exercise" : "Update Exercise"}</h2>
         <AddExercise />
-        <button onClick={onClose} className="text-red-500">
-          Close
-        </button>
       </div>
     </motion.div>
   );

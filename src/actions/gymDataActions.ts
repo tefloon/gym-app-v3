@@ -127,7 +127,7 @@ export const handleDeleteCategoryById = async (id: string) => {
     },
   });
 
-  // TODO: Delete the related ExerciseTypes and ExerciseInstances upon confirmation
+  // [ ]: Delete the related ExerciseTypes and ExerciseInstances upon confirmation
   if (exercisesWithCategory) {
     console.log("Category not empty. Aborting!");
     return {

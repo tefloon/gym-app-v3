@@ -8,15 +8,9 @@ type CategoryListProps = {
   optimisticCats?: PrismaCategory[];
 };
 
-// ================================================================
-//
-// TODO:
-// - Fix the aniumation to correctly move up upon deletion
-//   https://framermotionexamples.com/example/swipe-to-delete
-//
-// - Analyze the number of re-renders in prod
-//
-// ================================================================
+// [x]: Analyze the number of re-renders in prod
+// [ ]: Fix the animation to correctly move up on deletion (https://framermotionexamples.com/example/swipe-to-delete)
+
 export default function CategoryList({
   isLoading,
   handleDeleteClick,

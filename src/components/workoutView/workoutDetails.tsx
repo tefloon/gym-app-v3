@@ -43,10 +43,6 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
   if (error) {
     return <div>Error: {error}</div>;
   }

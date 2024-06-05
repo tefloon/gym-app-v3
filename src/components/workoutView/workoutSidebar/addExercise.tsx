@@ -2,20 +2,22 @@
 
 import React, { useEffect, useState, useTransition } from "react";
 import { ExerciseType as PrismaExerciseType } from "@prisma/client";
-import MyDropdown from "../elements/myDropdown";
+import MyDropdown from "../../elements/myDropdown";
 import { handleReturnExerciseTypes } from "@/actions/gymDataActions";
 import { Option } from "@/lib/types";
+import AddExerciseForm from "./addExerciseForm";
 
 export default function AddExercise() {
-  // Query all the exercise types - maybe before the main page loads?
-  // Populate the dropdown with them
+  // Query all the exercise types - maybe before the main page loads? 🗹
+  // Populate the dropdown with them 🗹
   // Chose what kind of exercise - dropdown
   // Show the appropriate set adding menu
   // Save and cancel buttons
 
   const [isLoading, startLoading] = useTransition();
-  const [types, setTypes] = useState<PrismaExerciseType[] | null>(null);
   const [options, setOptions] = useState<Option[] | null>(null);
+  const [chosenType, setChosenType] = useState<PrismaExerciseType | null>(null);
+  const [types, setTypes] = useState<PrismaExerciseType[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,22 +49,30 @@ export default function AddExercise() {
   }, [types]);
 
   const handleChooseOption = (id: string) => {
-    console.log(`Chosen id: ${id}`);
-  };
+    if (!types) return;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    console.log(`Chosen id: ${id}`);
+    const matchingType = types.find((type) => type.id === id);
+
+    // [ ]: Use toasts for errors instead
+    if (!matchingType) {
+      setError(`No exercise type with id ${id} found!`);
+      return;
+    }
+
+    setChosenType(matchingType);
+  };
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-10 items-center">
       {options && (
         <MyDropdown handleChooseOption={handleChooseOption} options={options} />
       )}
+      {chosenType && <AddExerciseForm chosenType={chosenType} />}
     </div>
   );
 }

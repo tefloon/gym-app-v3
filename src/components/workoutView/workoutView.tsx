@@ -1,7 +1,7 @@
 "use client";
 
 import MyCalendar from "@/components/calendar/calendar";
-import AddExerciseModal from "@/components/workoutView/addExerciseModal";
+import AddExerciseModal from "@/components/workoutView/workoutSidebar/addExerciseModal";
 import MyCustomButton from "@/components/elements/myCutomButton";
 import WorkoutDetails from "@/components/workoutView/workoutDetails";
 import React, { useEffect, useState } from "react";
@@ -32,7 +32,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   };
 
   const handleAddInstance = () => {
-    console.log("Pening modal for adding instances");
+    console.log("Opening modal for adding/modifying instances");
     setModalOpen((prev) => !prev);
   };
 
@@ -65,6 +65,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
             <AddExerciseModal
               isOpen={isModalOpen}
               onClose={() => setModalOpen(false)}
+              mode="add"
             />
           </LayoutGroup>
         </AnimatePresence>

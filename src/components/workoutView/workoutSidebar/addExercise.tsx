@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-import { ExerciseType as PrismaExerciseType } from "@prisma/client";
 import MyDropdown from "../../elements/myDropdown";
+import AddExerciseForm from "./addExerciseForm";
+import InstanceDetails from "../instanceDetails";
+import { ExerciseType as PrismaExerciseType } from "@prisma/client";
 import { handleReturnExerciseTypes } from "@/actions/gymDataActions";
 import { Option } from "@/lib/types";
-import AddExerciseForm from "./addExerciseForm";
+import { useAtom } from "jotai";
+import { instanceWithDetailsAtom, modalModeAtom } from "@/jotai/atoms";
 
 export default function AddExercise() {
   // Query all the exercise types - maybe before the main page loads? 🗹
@@ -19,6 +22,8 @@ export default function AddExercise() {
   const [chosenType, setChosenType] = useState<PrismaExerciseType | null>(null);
   const [types, setTypes] = useState<PrismaExerciseType[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
+  const [modalMode, setModalMode] = useAtom(modalModeAtom);
 
   useEffect(() => {
     startLoading(async () => {
@@ -67,12 +72,21 @@ export default function AddExercise() {
     return <div>Error: {error}</div>;
   }
 
+  if (modalMode === "update" && instance) {
+    return (
+      <div className="flex flex-col gap-10 items-center">
+        <AddExerciseForm />
+        <InstanceDetails {...instance} />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-10 items-center">
       {options && (
         <MyDropdown handleChooseOption={handleChooseOption} options={options} />
       )}
-      {chosenType && <AddExerciseForm chosenType={chosenType} />}
+      {chosenType && <AddExerciseForm />}
     </div>
   );
 }

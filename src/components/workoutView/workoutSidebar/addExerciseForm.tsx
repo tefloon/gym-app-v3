@@ -3,17 +3,13 @@
 import React, { useState } from "react";
 import { ExerciseType as PrismaExerciseType } from "@prisma/client";
 
-type AddExerciseFormProps = {
-  chosenType: PrismaExerciseType;
-};
-
-export default function AddExerciseForm({ chosenType }: AddExerciseFormProps) {
+export default function AddExerciseForm() {
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
 
   return (
     <section className="w-96 flex flex-col items-center">
-      {chosenType.name}
+      {/* {chosenType.name} */}
       <form action="">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-3 w-80">

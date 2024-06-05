@@ -7,6 +7,7 @@ import { WorkoutWithDetails } from "@/lib/prismaTypes";
 import InstanceDetails from "./instanceDetails";
 import { motion } from "framer-motion";
 import {
+  dateAtom,
   modalAtom,
   selectedWorkoutAtom,
   workoutWithDetailsAtom,
@@ -14,13 +15,10 @@ import {
 import { useAtom } from "jotai";
 import AddExerciseModal from "./workoutSidebar/addExerciseModal";
 
-type WorkoutViewProps = {
-  date: Date;
-};
-
-export default function WorkoutDetails({ date }: WorkoutViewProps) {
+export default function WorkoutDetails() {
   const [isLoading, startLoading] = useTransition();
   const [workout, setWorkout] = useAtom(workoutWithDetailsAtom);
+  const [date, setDate] = useAtom(dateAtom);
   const [error, setError] = useState<string | null>(null);
   // const [selectedWorkout, setSelectedWorkout] = useAtom(selectedWorkoutAtom);
 

@@ -17,16 +17,16 @@ export default function MyDropdown({
     handleChooseOption(event.target.value);
   };
 
-	// const dropdownClasses = ``
+  // const dropdownClasses = ``
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center max-w-[300px] w-full">
       <select
         id="category-select"
         onChange={handleChange}
-				className="p-2 rounded bg-slate-900 text-slate-200"
+        className="p-2 rounded bg-slate-900 text-slate-200 text-center w-full"
       >
-        <option value="">--Please choose an option--</option>
+        {/* <option value="">--Please choose an option--</option> */}
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

@@ -7,7 +7,7 @@ import WorkoutDetails from "@/components/workoutView/workoutDetails";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { modalAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
+import { dateAtom, modalAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
 import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
 
@@ -16,7 +16,8 @@ type WorkoutViewProps = {
 };
 
 export default function WorkoutView({ dates }: WorkoutViewProps) {
-  const [pickedDate, setPickedDate] = useState<Date>();
+  // const [pickedDate, setPickedDate] = useState<Date>();
+  const [pickedDate, setPickedDate] = useAtom(dateAtom);
   const [isModalOpen, setIsModalOpen] = useAtom(modalAtom);
   const [error, setError] = useState<string | null>(null);
   const [workout, setWorkout] = useAtom(workoutWithDetailsAtom);
@@ -93,15 +94,11 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
       >
         <AnimatePresence presenceAffectsLayout>
           <LayoutGroup>
-            <WorkoutDetails date={pickedDate ? pickedDate : new Date()} />
+            <WorkoutDetails />
             <MyCustomButton handleClick={handleAddInstance} />
           </LayoutGroup>
         </AnimatePresence>
-        <AddExerciseModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          mode="add"
-        />
+        <AddExerciseModal />
       </motion.div>
     </motion.div>
   );

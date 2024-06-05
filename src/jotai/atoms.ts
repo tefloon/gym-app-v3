@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { Workout as PrismaWorkout } from "@prisma/client";
-import { WorkoutWithDetails } from "@/lib/prismaTypes";
+import { InstanceWithDetails, WorkoutWithDetails } from "@/lib/prismaTypes";
 
 export const selectedWorkoutAtom = atom({
   isSelected: false,
@@ -10,6 +10,8 @@ export const selectedWorkoutAtom = atom({
 export const modalAtom = atom<boolean>(false);
 
 export const workoutWithDetailsAtom = atom<WorkoutWithDetails | null>(null);
+export const instanceWithDetailsAtom = atom<InstanceWithDetails | null>(null);
+export const modalModeAtom = atom<"add" | "update">("add");
 
 export const dateAtom = atom<Date>(new Date());
 

@@ -8,6 +8,8 @@ import "./markedDateStyle.css";
 // import { formatDate } from "@/lib/utilFunctions";
 
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { modalAtom } from "@/jotai/atoms";
 
 // import { useAtom } from "jotai";
 // import { workoutAtom } from "@/features/jotaiAtoms";
@@ -29,12 +31,16 @@ export default function MyCalendar({
   className,
 }: MyCalendarProps) {
   const [value, onChange] = useState<Value>(new Date());
-  // const [, setSelectedWorkout] = useAtom(workoutAtom);
-  const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState("");
+  const [modalOpen, setIsModalOpen] = useAtom(modalAtom);
 
   const datesSet = new Set(
     dates.map((date) => date.toLocaleDateString("pl-PL"))
   );
+
+  const handleClickAnywhere = () => {
+    setIsModalOpen(false);
+  };
 
   const handleDateChange = async (
     v: Value,
@@ -50,11 +56,12 @@ export default function MyCalendar({
 
     console.log(v.toISOString());
     let date = new Date(v);
+    setSelectedDate(date.toLocaleDateString());
     handleSelectedDateChange(date);
   };
 
   return (
-    <div className={` ${className}`}>
+    <div className={` ${className}`} onClick={handleClickAnywhere}>
       <Calendar
         locale="pl"
         onChange={(v, e) => handleDateChange(v, e)}
@@ -63,6 +70,10 @@ export default function MyCalendar({
           const dateString = date.toLocaleDateString("pl-PL");
           if (datesSet.has(dateString)) {
             return "markedDate";
+          }
+          if (date.toLocaleDateString() === selectedDate) {
+            console.log("mamy to!");
+            return "selected";
           }
         }}
       />

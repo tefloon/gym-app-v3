@@ -1,6 +1,6 @@
 import { InstanceWithDetails } from "@/lib/prismaTypes";
 import React from "react";
-import SetDetails from "./setDetails";
+import SetDetails from "@/components/workoutView/setDetails";
 import { useAtom } from "jotai";
 import {
   instanceWithDetailsAtom,
@@ -8,24 +8,18 @@ import {
   modalModeAtom,
 } from "@/jotai/atoms";
 
-export default function InstanceDetails(instance: InstanceWithDetails) {
-  const [, setIsModalOpen] = useAtom(modalAtom);
-  const [, setSelectedInstance] = useAtom(
-    instanceWithDetailsAtom
-  );
-  const [, setModalMode] = useAtom(modalModeAtom);
-
+export default function InstanceDetailsUpdate(instance: InstanceWithDetails) {
   const handleSelectInstance = () => {
-    setSelectedInstance(instance);
-    setModalMode("update");
-    setIsModalOpen(true);
+    console.log("Selo!");
+    // setSelectedInstance(instance);
+    // setModalMode("update");
+    // setIsModalOpen(true);
   };
 
   if (instance.sets.length === 0 || !instance.sets) {
     return <div>No sets to show...</div>;
   }
 
-  // [ ]: Maybe add a cogwheel icon or something for changing the instance
   return (
     <div
       className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4 hover:bg-slate-900 cursor-pointer"

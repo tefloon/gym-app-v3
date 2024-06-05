@@ -62,6 +62,14 @@ export const handleReturnWorkoutByDate = async (inputDate: Date) => {
   return workout;
 };
 
+// Workout ExerciseType handlers
+// ==============================
+export const handleReturnExerciseTypes = async () => {
+  const types = await prisma.exerciseType.findMany({});
+
+  return types;
+};
+
 // Category handlers
 // =================
 export const handleCreateCategory = async ({

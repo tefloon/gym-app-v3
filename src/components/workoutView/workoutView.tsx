@@ -5,15 +5,22 @@ import MyDatePicker from "@/components/createData/datePicker";
 import AddExerciseModal from "@/components/workoutView/addExerciseModal";
 import MyCustomButton from "@/components/elements/myCutomButton";
 import WorkoutDetails from "@/components/workoutView/workoutDetails";
+import MyDropdown from "@/components/elements/myDropdown";
 import React, { useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 
 export default function WorkoutView() {
-  const [date, setDate] = useState<Date>();
+  const [pickedDate, setPickedDate] = useState<Date>();
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleDatePick = (date: Date) => {
-    setDate(date);
+    console.log(`N: ${date.toLocaleDateString()}`);
+    console.log(`O: ${pickedDate?.toLocaleDateString()}`);
+    if (date.toLocaleDateString() === pickedDate?.toLocaleDateString()) {
+      console.log("The same!");
+      return;
+    }
+    setPickedDate(date);
   };
 
   const handleAddInstance = () => {
@@ -44,7 +51,7 @@ export default function WorkoutView() {
       >
         <AnimatePresence presenceAffectsLayout>
           <LayoutGroup>
-            <WorkoutDetails date={date} />
+            <WorkoutDetails date={pickedDate} />
             <MyCustomButton handleClick={handleAddInstance} />
             <AddExerciseModal
               isOpen={isModalOpen}

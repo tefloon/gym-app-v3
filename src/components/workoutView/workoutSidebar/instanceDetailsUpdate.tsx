@@ -4,7 +4,7 @@ import SetDetails from "@/components/workoutView/setDetails";
 import { useAtom } from "jotai";
 import {
   instanceWithDetailsAtom,
-  modalAtom,
+  modalOpenAtom,
   modalModeAtom,
 } from "@/jotai/atoms";
 

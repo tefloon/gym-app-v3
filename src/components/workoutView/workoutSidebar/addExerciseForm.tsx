@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { ExerciseType as PrismaExerciseType } from "@prisma/client";
 
 export default function AddExerciseForm() {
   const [weight, setWeight] = useState(0);

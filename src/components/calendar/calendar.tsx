@@ -9,7 +9,7 @@ import "./markedDateStyle.css";
 
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import { modalAtom } from "@/jotai/atoms";
+import { modalOpenAtom } from "@/jotai/atoms";
 
 // import { useAtom } from "jotai";
 // import { workoutAtom } from "@/features/jotaiAtoms";
@@ -32,7 +32,7 @@ export default function MyCalendar({
 }: MyCalendarProps) {
   const [value, onChange] = useState<Value>(new Date());
   const [selectedDate, setSelectedDate] = useState("");
-  const [modalOpen, setIsModalOpen] = useAtom(modalAtom);
+  const [modalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
 
   const datesSet = new Set(
     dates.map((date) => date.toLocaleDateString("pl-PL"))

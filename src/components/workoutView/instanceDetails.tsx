@@ -4,15 +4,13 @@ import SetDetails from "./setDetails";
 import { useAtom } from "jotai";
 import {
   instanceWithDetailsAtom,
-  modalAtom,
+  modalOpenAtom,
   modalModeAtom,
 } from "@/jotai/atoms";
 
 export default function InstanceDetails(instance: InstanceWithDetails) {
-  const [, setIsModalOpen] = useAtom(modalAtom);
-  const [, setSelectedInstance] = useAtom(
-    instanceWithDetailsAtom
-  );
+  const [, setIsModalOpen] = useAtom(modalOpenAtom);
+  const [, setSelectedInstance] = useAtom(instanceWithDetailsAtom);
   const [, setModalMode] = useAtom(modalModeAtom);
 
   const handleSelectInstance = () => {

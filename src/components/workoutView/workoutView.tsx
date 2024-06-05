@@ -7,7 +7,7 @@ import WorkoutDetails from "@/components/workoutView/workoutDetails";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { dateAtom, modalAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
+import { dateAtom, modalOpenAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
 import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
 
@@ -16,11 +16,10 @@ type WorkoutViewProps = {
 };
 
 export default function WorkoutView({ dates }: WorkoutViewProps) {
-  // const [pickedDate, setPickedDate] = useState<Date>();
   const [pickedDate, setPickedDate] = useAtom(dateAtom);
-  const [isModalOpen, setIsModalOpen] = useAtom(modalAtom);
-  const [error, setError] = useState<string | null>(null);
-  const [workout, setWorkout] = useAtom(workoutWithDetailsAtom);
+  const [isModalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
+  const [, setError] = useState<string | null>(null);
+  const [, setWorkout] = useAtom(workoutWithDetailsAtom);
 
   const fetchWorkout = async (date: Date) => {
     console.log("Fetching the workout");
@@ -55,8 +54,6 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
 
   // [ ]: Get the workout from DB here
   const handleDatePick = async (date: Date) => {
-    // console.log(`N: ${date.toLocaleDateString()}`);
-    // console.log(`O: ${pickedDate?.toLocaleDateString()}`);
     if (date.toLocaleDateString() === pickedDate?.toLocaleDateString()) {
       console.log("The same!");
       return;

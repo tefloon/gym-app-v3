@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import React from "react";
 import AddExercise from "./addExercise";
 import { useAtom } from "jotai";
-import { modalAtom, modalModeAtom } from "@/jotai/atoms";
+import { modalOpenAtom, modalModeAtom } from "@/jotai/atoms";
 
 export default function AddExerciseModal() {
-  const [isModalOpen, setIsModalOpen] = useAtom(modalAtom);
+  const [isModalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
 
   return (

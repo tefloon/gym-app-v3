@@ -1,26 +1,16 @@
 "use client";
 
-import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
 import { DateTime } from "luxon";
-import React, { useEffect, useState, useTransition } from "react";
-import { WorkoutWithDetails } from "@/lib/prismaTypes";
+import React, { useState } from "react";
 import InstanceDetails from "./instanceDetails";
 import { motion } from "framer-motion";
-import {
-  dateAtom,
-  modalAtom,
-  selectedWorkoutAtom,
-  workoutWithDetailsAtom,
-} from "@/jotai/atoms";
+import { dateAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
 import { useAtom } from "jotai";
-import AddExerciseModal from "./workoutSidebar/addExerciseModal";
 
 export default function WorkoutDetails() {
-  const [isLoading, startLoading] = useTransition();
   const [workout, setWorkout] = useAtom(workoutWithDetailsAtom);
   const [date, setDate] = useAtom(dateAtom);
   const [error, setError] = useState<string | null>(null);
-  // const [selectedWorkout, setSelectedWorkout] = useAtom(selectedWorkoutAtom);
 
   if (error) {
     return <div>Error: {error}</div>;

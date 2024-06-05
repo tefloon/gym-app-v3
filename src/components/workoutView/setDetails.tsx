@@ -22,9 +22,9 @@ export default function SetDetails({ set, loadType }: SetDetailsProps) {
       key={set.id}
       className="flex flex-row justify-between rounded bg-slate-600 text-slate-300 p-4"
     >
-      <span>{set.order}</span>
-      <span className="px-24">{loadString}</span>
-      <span>{set.wasCompleted ? "✔" : "❌"}</span>
+      <span className="pr-4">{set.order}</span>
+      <span className="text-center grow">{loadString}</span>
+      <span className="pl-4">{set.wasCompleted ? "✔" : "❌"}</span>
     </div>
   );
 }

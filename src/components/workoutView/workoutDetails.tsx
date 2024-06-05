@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 import React, { useEffect, useState, useTransition } from "react";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
 import InstanceDetails from "./instanceDetails";
+import { motion } from "framer-motion";
 
 type WorkoutViewProps = {
   date?: Date;
@@ -42,10 +43,20 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <motion.div
+      className="flex flex-col items-center w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
       {workout ? (
         <>
-          <div>{workout.date.toUTCString()}</div>
+          <div>
+            {DateTime.fromJSDate(workout.date)
+              .setLocale("pl")
+              .toLocaleString(DateTime.DATE_FULL)}
+          </div>
           {workout.exerciseInstances.map((instance, id) => (
             <InstanceDetails key={instance.id} {...instance} />
           ))}
@@ -53,6 +64,6 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
       ) : (
         <div>No workout found for the selected date.</div>
       )}
-    </div>
+    </motion.div>
   );
 }

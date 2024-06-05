@@ -16,7 +16,7 @@ export default function AddExerciseModal({
       animate={{ x: isOpen ? "0%" : "100%" }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed top-0 right-0 h-full min-w-[500px] bg-white/30 shadow-lg z-50"
+      className="fixed top-0 right-0 h-full min-w-[500px] bg-white/30 shadow-lg z-50 rounded"
     >
       <div className="p-4">
         <button onClick={onClose} className="text-red-500">

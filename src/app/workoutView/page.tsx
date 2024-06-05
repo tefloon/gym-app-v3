@@ -1,33 +1,10 @@
-"use client";
+import WorkoutView from "@/components/workoutView/workoutView";
+import React from "react";
 
-import MyDatePicker from "@/components/createData/datePicker";
-import AddExerciseModal from "@/components/workoutView/addExerciseModal";
-import MyCustomButton from "@/components/workoutView/addInstance";
-import WorkoutDetails from "@/components/workoutView/workoutDetails";
-import React, { useState } from "react";
-
-export default function WorkoutView() {
-  const [date, setDate] = useState<Date>();
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleDatePick = (date: Date) => {
-    setDate(date);
-  };
-
-  const handleAddInstance = () => {
-    console.log("Adding instance");
-    setModalOpen((prev) => !prev);
-  };
-
+export default function WorkoutPage() {
   return (
-    <div className="flex flex-col items-center gap-6">
-      <MyDatePicker handleDatePick={handleDatePick} />
-      <WorkoutDetails date={date} />
-      <MyCustomButton handleClick={handleAddInstance} />
-      <AddExerciseModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-      />
+    <div className="flex relative flex-col items-center bg-geen-500 w-full">
+      <WorkoutView />
     </div>
   );
 }

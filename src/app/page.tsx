@@ -1,10 +1,7 @@
 export default function Home() {
   return (
-    <main
-      key="kurwa"
-      className="flex min-h-screen flex-col items-center gap-4 p-12"
-    >
+    <section className="flex min-h-screen flex-col items-center gap-4 p-12">
       Main page
-    </main>
+    </section>
   );
 }

@@ -1,14 +1,17 @@
 import { atom } from "jotai";
 import { Workout as PrismaWorkout } from "@prisma/client";
+import { WorkoutWithDetails } from "@/lib/prismaTypes";
 
 export const selectedWorkoutAtom = atom({
   isSelected: false,
   id: "",
 });
 
-export const modalAtom = atom({
-  isOpen: false,
-});
+export const modalAtom = atom<boolean>(false);
+
+export const workoutWithDetailsAtom = atom<WorkoutWithDetails | null>(null);
+
+export const dateAtom = atom<Date>(new Date());
 
 // const rowsAtom = atom({
 //   isSelected: false,

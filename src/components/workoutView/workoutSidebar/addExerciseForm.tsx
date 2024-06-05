@@ -10,7 +10,6 @@ type AddExerciseFormProps = {
 export default function AddExerciseForm({ chosenType }: AddExerciseFormProps) {
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
-  // const [row, setRow] = useAtom(rowsAtom);
 
   return (
     <section className="w-96 flex flex-col items-center">

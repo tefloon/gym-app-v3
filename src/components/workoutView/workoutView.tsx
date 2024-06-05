@@ -7,7 +7,9 @@ import WorkoutDetails from "@/components/workoutView/workoutDetails";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { modalAtom } from "@/jotai/atoms";
+import { modalAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
+import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
+import { WorkoutWithDetails } from "@/lib/prismaTypes";
 
 type WorkoutViewProps = {
   dates: Date[];
@@ -15,27 +17,56 @@ type WorkoutViewProps = {
 
 export default function WorkoutView({ dates }: WorkoutViewProps) {
   const [pickedDate, setPickedDate] = useState<Date>();
-  const [modal, setModal] = useAtom(modalAtom);
+  const [isModalOpen, setIsModalOpen] = useAtom(modalAtom);
+  const [error, setError] = useState<string | null>(null);
+  const [workout, setWorkout] = useAtom(workoutWithDetailsAtom);
+
+  const fetchWorkout = async (date: Date) => {
+    console.log("Fetching the workout");
+
+    // [ ]: We can get rid of the unnecessary DB query by checking
+    // if the date is in dates (of workouts we get earlier to mark entries on the calendar)
+    try {
+      const response = await handleReturnWorkoutByDate(date);
+      if (response instanceof Error) {
+        setError(response.message);
+        return;
+      }
+      if (!response) {
+        console.log(`No workout for date: ${date.toLocaleString()}`);
+        setWorkout(null);
+        return;
+      }
+      setWorkout(response as WorkoutWithDetails);
+    } catch (e) {
+      console.error(e);
+      setError("An unexpected error occurred");
+    }
+  };
 
   useEffect(() => {
-    if (pickedDate === null || pickedDate === undefined)
+    if (!pickedDate) {
       setPickedDate(new Date());
+      fetchWorkout(new Date());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDatePick = (date: Date) => {
-    console.log(`N: ${date.toLocaleDateString()}`);
-    console.log(`O: ${pickedDate?.toLocaleDateString()}`);
+  // [ ]: Get the workout from DB here
+  const handleDatePick = async (date: Date) => {
+    // console.log(`N: ${date.toLocaleDateString()}`);
+    // console.log(`O: ${pickedDate?.toLocaleDateString()}`);
     if (date.toLocaleDateString() === pickedDate?.toLocaleDateString()) {
       console.log("The same!");
       return;
     }
+    fetchWorkout(date);
     setPickedDate(date);
   };
 
   const handleAddInstance = () => {
     console.log("Opening modal for adding/modifying instances");
-    setModal({ isOpen: !modal.isOpen });
+    setIsModalOpen(!isModalOpen);
   };
 
   if (dates === null || dates === undefined)
@@ -62,10 +93,15 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
       >
         <AnimatePresence presenceAffectsLayout>
           <LayoutGroup>
-            <WorkoutDetails date={pickedDate} />
+            <WorkoutDetails date={pickedDate ? pickedDate : new Date()} />
             <MyCustomButton handleClick={handleAddInstance} />
           </LayoutGroup>
         </AnimatePresence>
+        <AddExerciseModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          mode="add"
+        />
       </motion.div>
     </motion.div>
   );

@@ -21,13 +21,10 @@ export default function InstanceDetailsUpdate(instance: InstanceWithDetails) {
   }
 
   return (
-    <div
-      className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4 hover:bg-slate-900 cursor-pointer"
-      onClick={handleSelectInstance}
-    >
-      <div>
+    <div className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4">
+      {/* <div>
         <h3 className="text-2xl p-4">{instance.exerciseType.name}</h3>
-      </div>
+      </div> */}
       <div className="flex flex-col gap-2 w-full">
         {instance.sets.map((set, id) => (
           <SetDetails

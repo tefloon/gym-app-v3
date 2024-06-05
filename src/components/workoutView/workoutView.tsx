@@ -4,7 +4,7 @@ import MyCalendar from "@/components/calendar/calendar";
 import AddExerciseModal from "@/components/workoutView/workoutSidebar/addExerciseModal";
 import MyCustomButton from "@/components/elements/myCutomButton";
 import WorkoutDetails from "@/components/workoutView/workoutDetails";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { dateAtom, modalOpenAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
@@ -20,6 +20,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   const [isModalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
   const [, setError] = useState<string | null>(null);
   const [, setWorkout] = useAtom(workoutWithDetailsAtom);
+  const [pending, startTransition] = useTransition();
 
   const fetchWorkout = async (date: Date) => {
     console.log("Fetching the workout");
@@ -45,14 +46,18 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   };
 
   useEffect(() => {
-    if (!pickedDate) {
-      setPickedDate(new Date());
-      fetchWorkout(new Date());
-    }
+    startTransition(async () => {
+      let date = pickedDate;
+      if (!date) {
+        date = new Date();
+      }
+      setPickedDate(date);
+      await fetchWorkout(date);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // [ ]: Get the workout from DB here
+  // [x]: Get the workout from DB here
   const handleDatePick = async (date: Date) => {
     if (date.toLocaleDateString() === pickedDate?.toLocaleDateString()) {
       console.log("The same!");

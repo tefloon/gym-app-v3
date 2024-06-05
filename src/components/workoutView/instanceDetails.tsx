@@ -1,10 +1,21 @@
 import { InstanceWithDetails } from "@/lib/prismaTypes";
 import React from "react";
+import SetDetails from "./setDetails";
 
-type InstanceDetailsProps = {
-  instance: InstanceWithDetails;
-};
+export default function InstanceDetails(instance: InstanceWithDetails) {
+  if (instance.sets.length === 0 || !instance.sets) {
+    return <div>No sets to show...</div>;
+  }
 
-export default function InstanceDetails({ instance }: InstanceDetailsProps) {
-  return <div>InstanceDetails</div>;
+  return (
+    <div className="flex flex-col gap-2 ">
+      {instance.sets.map((set, id) => (
+        <SetDetails
+          key={set.id}
+          set={set}
+          loadType={instance.exerciseType.loadingType}
+        />
+      ))}
+    </div>
+  );
 }

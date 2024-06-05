@@ -4,6 +4,7 @@ import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
 import { DateTime } from "luxon";
 import React, { useEffect, useState, useTransition } from "react";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
+import InstanceDetails from "./instanceDetails";
 
 type WorkoutViewProps = {
   date?: Date;
@@ -44,7 +45,12 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
   return (
     <div>
       {workout ? (
-        <div>{workout.date.toUTCString()}</div>
+        <>
+          <div>{workout.date.toUTCString()}</div>
+          {workout.exerciseInstances.map((instance, id) => (
+            <InstanceDetails key={instance.id} {...instance} />
+          ))}
+        </>
       ) : (
         <div>No workout found for the selected date.</div>
       )}

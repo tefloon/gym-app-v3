@@ -8,7 +8,7 @@ export default function InstanceDetails(instance: InstanceWithDetails) {
   }
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4">
       <div>
         <h3 className="text-2xl p-4">{instance.exerciseType.name}</h3>
       </div>

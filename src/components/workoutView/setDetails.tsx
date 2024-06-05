@@ -20,11 +20,13 @@ export default function SetDetails({ set, loadType }: SetDetailsProps) {
   return (
     <div
       key={set.id}
-      className="flex flex-row justify-between rounded bg-slate-600 text-slate-300 p-4"
+      className="flex flex-row justify-between items-center rounded bg-slate-600 text-slate-300 p-2"
     >
-      <span className="pr-4">{set.order}</span>
-      <span className="text-center grow">{loadString}</span>
-      <span className="pl-4">{set.wasCompleted ? "✔" : "❌"}</span>
+      <span className="px-4">{set.order}</span>
+      <span className="text-center grow font-semibold">{loadString}</span>
+      <span className="pl-4 text-2xl text-green-500 cursor-pointer">
+        {set.wasCompleted ? "☐" : "🗹"}
+      </span>
     </div>
   );
 }

@@ -1,17 +1,25 @@
 "use client";
 
 import MyCalendar from "@/components/calendar/calendar";
-import MyDatePicker from "@/components/createData/datePicker";
 import AddExerciseModal from "@/components/workoutView/addExerciseModal";
 import MyCustomButton from "@/components/elements/myCutomButton";
 import WorkoutDetails from "@/components/workoutView/workoutDetails";
-import MyDropdown from "@/components/elements/myDropdown";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 
-export default function WorkoutView() {
+type WorkoutViewProps = {
+  dates: Date[];
+};
+
+export default function WorkoutView({ dates }: WorkoutViewProps) {
   const [pickedDate, setPickedDate] = useState<Date>();
   const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (pickedDate === null || pickedDate === undefined)
+      setPickedDate(new Date());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleDatePick = (date: Date) => {
     console.log(`N: ${date.toLocaleDateString()}`);
@@ -28,7 +36,8 @@ export default function WorkoutView() {
     setModalOpen((prev) => !prev);
   };
 
-  const dates = [new Date("2024-06-05")];
+  if (dates === null || dates === undefined)
+    dates = [new Date("2024-06-05"), new Date("2024-06-08")];
 
   return (
     <motion.div

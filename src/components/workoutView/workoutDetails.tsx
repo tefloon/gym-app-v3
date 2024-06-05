@@ -25,7 +25,6 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
           setError(response.message);
           return;
         }
-        if (!response) return;
         setWorkout(response as WorkoutWithDetails);
       } catch (e) {
         console.error(e);
@@ -43,7 +42,7 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       {workout ? (
         <>
           <div>{workout.date.toUTCString()}</div>

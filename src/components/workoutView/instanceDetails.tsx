@@ -8,14 +8,19 @@ export default function InstanceDetails(instance: InstanceWithDetails) {
   }
 
   return (
-    <div className="flex flex-col gap-2 ">
-      {instance.sets.map((set, id) => (
-        <SetDetails
-          key={set.id}
-          set={set}
-          loadType={instance.exerciseType.loadingType}
-        />
-      ))}
+    <div className="flex flex-col items-center">
+      <div>
+        <h3 className="text-2xl p-4">{instance.exerciseType.name}</h3>
+      </div>
+      <div className="flex flex-col gap-2 ">
+        {instance.sets.map((set, id) => (
+          <SetDetails
+            key={set.id}
+            set={set}
+            loadType={instance.exerciseType.loadingType}
+          />
+        ))}
+      </div>
     </div>
   );
 }

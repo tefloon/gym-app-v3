@@ -10,7 +10,7 @@ type SetDetailsProps = {
 };
 
 export default function SetDetails({ set, loadType }: SetDetailsProps) {
-  const loadValues = set.load.split("#");
+  const loadValues = set.load.split("x");
   let loadString = `${loadValues[0]} ${loadType.firstUnit}`;
 
   if (loadType.areBothSignificant) {
@@ -23,7 +23,7 @@ export default function SetDetails({ set, loadType }: SetDetailsProps) {
       className="flex flex-row justify-between rounded bg-slate-600 text-slate-300 p-4"
     >
       <span>{set.order}</span>
-      <span>{loadString}</span>
+      <span className="px-24">{loadString}</span>
       <span>{set.wasCompleted ? "✔" : "❌"}</span>
     </div>
   );

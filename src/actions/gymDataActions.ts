@@ -171,6 +171,7 @@ export const handleCreateEverything = async () => {
       exerciseType: {
         create: {
           id: createId(),
+          name: `Bicep Curls_${Math.floor(Math.random() * 1000).toString()}`,
           personalBest: "0",
           category: {
             create: {

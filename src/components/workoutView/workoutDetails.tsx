@@ -6,8 +6,9 @@ import React, { useEffect, useState, useTransition } from "react";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
 import InstanceDetails from "./instanceDetails";
 import { motion } from "framer-motion";
-import { selectedWorkoutAtom } from "@/jotai/atoms";
+import { modalAtom, selectedWorkoutAtom } from "@/jotai/atoms";
 import { useAtom } from "jotai";
+import AddExerciseModal from "./workoutSidebar/addExerciseModal";
 
 type WorkoutViewProps = {
   date?: Date;
@@ -18,6 +19,8 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
   const [workout, setWorkout] = useState<WorkoutWithDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedWorkout, setSelectedWorkout] = useAtom(selectedWorkoutAtom);
+  // const [isModalOpen, setModalOpen] = useState(false);
+  const [modal, setModal] = useAtom(modalAtom);
 
   useEffect(() => {
     if (date === null || date === undefined) return;
@@ -70,6 +73,11 @@ export default function WorkoutDetails({ date }: WorkoutViewProps) {
         <div>No workout found for the selected date.</div>
       )}
       <div className="text-slate-600 text-xs pt-2">{selectedWorkout.id}</div>
+      <AddExerciseModal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ isOpen: false })}
+        mode="add"
+      />
     </motion.div>
   );
 }

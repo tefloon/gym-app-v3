@@ -6,6 +6,8 @@ import MyCustomButton from "@/components/elements/myCutomButton";
 import WorkoutDetails from "@/components/workoutView/workoutDetails";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { useAtom } from "jotai";
+import { modalAtom } from "@/jotai/atoms";
 
 type WorkoutViewProps = {
   dates: Date[];
@@ -13,7 +15,7 @@ type WorkoutViewProps = {
 
 export default function WorkoutView({ dates }: WorkoutViewProps) {
   const [pickedDate, setPickedDate] = useState<Date>();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [modal, setModal] = useAtom(modalAtom);
 
   useEffect(() => {
     if (pickedDate === null || pickedDate === undefined)
@@ -33,7 +35,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
 
   const handleAddInstance = () => {
     console.log("Opening modal for adding/modifying instances");
-    setModalOpen((prev) => !prev);
+    setModal({ isOpen: !modal.isOpen });
   };
 
   if (dates === null || dates === undefined)
@@ -62,11 +64,6 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
           <LayoutGroup>
             <WorkoutDetails date={pickedDate} />
             <MyCustomButton handleClick={handleAddInstance} />
-            <AddExerciseModal
-              isOpen={isModalOpen}
-              onClose={() => setModalOpen(false)}
-              mode="add"
-            />
           </LayoutGroup>
         </AnimatePresence>
       </motion.div>

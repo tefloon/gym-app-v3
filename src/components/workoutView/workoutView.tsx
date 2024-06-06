@@ -7,7 +7,12 @@ import WorkoutDetails from "@/components/workoutView/workoutDetails";
 import React, { useEffect, useState, useTransition } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { dateAtom, modalOpenAtom, workoutWithDetailsAtom } from "@/jotai/atoms";
+import {
+  dateAtom,
+  modalModeAtom,
+  modalOpenAtom,
+  workoutWithDetailsAtom,
+} from "@/jotai/atoms";
 import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
 
@@ -21,12 +26,11 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   const [, setError] = useState<string | null>(null);
   const [, setWorkout] = useAtom(workoutWithDetailsAtom);
   const [pending, startTransition] = useTransition();
+  const [modalMode, setModalMode] = useAtom(modalModeAtom);
 
   const fetchWorkout = async (date: Date) => {
-    console.log("Fetching the workout");
+    // console.log("Fetching the workout");
 
-    // [ ]: We can get rid of the unnecessary DB query by checking
-    // if the date is in dates (of workouts we get earlier to mark entries on the calendar)
     try {
       const response = await handleReturnWorkoutByDate(date);
       if (response instanceof Error) {
@@ -34,7 +38,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
         return;
       }
       if (!response) {
-        console.log(`No workout for date: ${date.toLocaleString()}`);
+        // console.log(`No workout for date: ${date.toLocaleString()}`);
         setWorkout(null);
         return;
       }
@@ -58,9 +62,9 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   }, []);
 
   // [x]: Get the workout from DB here
-  const handleDatePick = async (date: Date) => {
+  const handleDatePick = (date: Date) => {
     if (date.toLocaleDateString() === pickedDate?.toLocaleDateString()) {
-      console.log("The same!");
+      // console.log("The same!");
       return;
     }
     fetchWorkout(date);
@@ -68,8 +72,9 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   };
 
   const handleAddInstance = () => {
-    console.log("Opening modal for adding/modifying instances");
-    setIsModalOpen(!isModalOpen);
+    // console.log("Opening modal for adding/modifying instances");
+    setModalMode("add");
+    setIsModalOpen(true);
   };
 
   if (dates === null || dates === undefined)
@@ -97,7 +102,10 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
         <AnimatePresence presenceAffectsLayout>
           <LayoutGroup>
             <WorkoutDetails />
-            <MyCustomButton handleClick={handleAddInstance} />
+            <MyCustomButton
+              handleClick={handleAddInstance}
+              className="dont-close"
+            />
           </LayoutGroup>
         </AnimatePresence>
         <AddExerciseModal />

@@ -27,7 +27,7 @@ export default function AddExercise() {
 
   useEffect(() => {
     startLoading(async () => {
-      console.log("Fetching the options");
+      // console.log("Fetching the options");
       try {
         const response = await handleReturnExerciseTypes();
         if (response instanceof Error) {
@@ -35,7 +35,7 @@ export default function AddExercise() {
           return;
         }
         setTypes(response as PrismaExerciseType[]);
-        console.log("Set types successfully");
+        // console.log("Set types successfully");
       } catch (e) {
         console.error(e);
         setError("An unexpected error occurred");

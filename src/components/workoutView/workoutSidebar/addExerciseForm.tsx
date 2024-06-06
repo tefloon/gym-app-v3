@@ -6,6 +6,45 @@ export default function AddExerciseForm() {
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
 
+  const decrementWeight = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setWeight((preWeight) => preWeight - 2.5);
+  };
+
+  const incrementWeight = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setWeight((preWeight) => preWeight + 2.5);
+  };
+
+  const decrementReps = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setReps((preReps) => preReps - 1);
+  };
+
+  const incrementReps = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setReps((preReps) => preReps + 1);
+  };
+
+  // const resetForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   setReps(0);
+  //   setWeight(0);
+  // };
+
+  // const deleteSelected = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   if (row.isSelected) {
+  //     handleDeleteSet(row.selectedRow);
+  //     setRow({ isSelected: false, selectedRow: "" });
+  //   }
+  // };
+
+  // const addSet = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   console.log("Adding a Set");
+  // };
+
   return (
     <section className="w-96 flex flex-col items-center">
       {/* {chosenType.name} */}
@@ -18,7 +57,7 @@ export default function AddExerciseForm() {
             <div className="flex flex-row self-center">
               <span className="flex flex-row items-center gap-5">
                 <button
-                  // onClick={decrementWeight}
+                  onClick={decrementWeight}
                   className="w-8 h-8 bg-gray-500 text-xl"
                 >
                   -
@@ -31,7 +70,7 @@ export default function AddExerciseForm() {
                   onChange={(e) => setWeight(Number(e.target.value))}
                 />
                 <button
-                  // onClick={incrementWeight}
+                  onClick={incrementWeight}
                   className="w-8 h-8 bg-gray-500 text-xl"
                 >
                   +
@@ -46,7 +85,7 @@ export default function AddExerciseForm() {
             <div className="flex flex-row self-center">
               <span className="flex flex-row items-center gap-5">
                 <button
-                  // onClick={decrementReps}
+                  onClick={decrementReps}
                   className="w-8 h-8 bg-gray-500 text-xl"
                 >
                   -
@@ -60,7 +99,7 @@ export default function AddExerciseForm() {
                 />
                 <input type="hidden" name="sessionId" />
                 <button
-                  // onClick={incrementReps}
+                  onClick={incrementReps}
                   className="w-8 h-8 bg-gray-500 text-xl"
                 >
                   +
@@ -70,9 +109,9 @@ export default function AddExerciseForm() {
           </div>
           <div className="flex flex-row gap-2">
             <button
-              formAction={async (formData) => {
-                // await handleAddSet(formData);
-              }}
+              // formAction={async (formData) => {
+              //   // await handleAddSet(formData);
+              // }}
               className="flex-1 bg-green-700 py-1 rounded-sm font-bold"
             >
               SAVE

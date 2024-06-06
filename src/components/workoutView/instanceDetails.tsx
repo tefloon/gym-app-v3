@@ -26,7 +26,7 @@ export default function InstanceDetails(instance: InstanceWithDetails) {
   // [ ]: Maybe add a cogwheel icon or something for changing the instance
   return (
     <div
-      className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4 hover:bg-slate-900 cursor-pointer"
+      className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4 hover:bg-slate-900 cursor-pointer dont-close"
       onClick={handleSelectInstance}
     >
       <div>

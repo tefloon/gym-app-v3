@@ -54,7 +54,7 @@ export default function MyCalendar({
       return;
     }
 
-    console.log(v.toISOString());
+    // console.log(v.toISOString());
     let date = new Date(v);
     setSelectedDate(date.toLocaleDateString());
     handleSelectedDateChange(date);
@@ -72,7 +72,6 @@ export default function MyCalendar({
             return "markedDate";
           }
           if (date.toLocaleDateString() === selectedDate) {
-            console.log("mamy to!");
             return "selected";
           }
         }}

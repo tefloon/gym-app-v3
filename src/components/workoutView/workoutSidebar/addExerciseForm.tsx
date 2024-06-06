@@ -5,11 +5,12 @@ import NumberInput from "@/components/elements/numberInput";
 import { instanceWithDetailsAtom, modalModeAtom } from "@/jotai/atoms";
 import { createId } from "@paralleldrive/cuid2";
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import React, { useOptimistic, useState } from "react";
 
 export default function AddExerciseForm() {
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
   const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
+  const [instanceOptimistic, setInstanceOptimistic] = useOptimistic(instance);
 
   const [values, setValues] = useState([0, 0]);
 

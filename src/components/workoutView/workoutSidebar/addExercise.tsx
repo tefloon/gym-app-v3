@@ -75,7 +75,7 @@ export default function AddExercise() {
   if (modalMode === "update") {
     return (
       <div className="flex flex-col gap-10 items-center">
-        <AddExerciseForm />
+        
         <InstanceDetailsUpdate />
       </div>
     );

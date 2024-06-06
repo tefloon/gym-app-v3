@@ -65,6 +65,7 @@ export default function NumberInput({
 
   useEffect(() => {
     onValueChange(value);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const setValueManually = (newValue: number) => {

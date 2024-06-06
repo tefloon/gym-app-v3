@@ -15,6 +15,7 @@ import {
 } from "@/jotai/atoms";
 import { handleReturnWorkoutByDate } from "@/actions/gymDataActions";
 import { WorkoutWithDetails } from "@/lib/prismaTypes";
+import NumberInput from "../elements/numberInput";
 
 type WorkoutViewProps = {
   dates: Date[];

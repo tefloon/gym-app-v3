@@ -1,44 +1,44 @@
 "use client";
 
+import { handleAddSetToExerciseInstance } from "@/actions/gymDataActions";
 import NumberInput from "@/components/elements/numberInput";
+import { instanceWithDetailsAtom, modalModeAtom } from "@/jotai/atoms";
+import { createId } from "@paralleldrive/cuid2";
+import { useAtom } from "jotai";
 import React, { useState } from "react";
 
 export default function AddExerciseForm() {
-  const [weight, setWeight] = useState(0);
-  const [reps, setReps] = useState(0);
+  const [modalMode, setModalMode] = useAtom(modalModeAtom);
+  const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
 
-  const decrementReps = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setReps((preReps) => preReps - 1);
-  };
-
-  const incrementReps = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setReps((preReps) => preReps + 1);
-  };
+  const [values, setValues] = useState([0, 0]);
 
   const handleWeightChanged = (newValue: number) => {
-    console.log(newValue);
+    console.log(`New weight: ${newValue}`);
+    setValues((prev) => [newValue, prev[1]]);
   };
 
-  // const resetForm = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   setReps(0);
-  //   setWeight(0);
-  // };
+  const handleRepsChanged = (newValue: number) => {
+    console.log(`New reps: ${newValue}`);
+    setValues((prev) => [prev[0], newValue]);
+  };
 
-  // const deleteSelected = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   if (row.isSelected) {
-  //     handleDeleteSet(row.selectedRow);
-  //     setRow({ isSelected: false, selectedRow: "" });
-  //   }
-  // };
+  // When clicking ADD we:
+  // - create a new Set
+  // - send it to a server action to append the instance
 
-  // const addSet = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   console.log("Adding a Set");
-  // };
+  const handleClickConfirm = () => {
+    if (modalMode === "update" && instance) {
+      const newSet = {
+        id: createId(),
+        order: 3, // Assuming this is the 3rd set
+        wasCompleted: false,
+        load: ` ${values[0]}x${values[1]} `,
+      };
+
+      handleAddSetToExerciseInstance(instance.id, newSet);
+    }
+  };
 
   return (
     <section className="w-96 flex flex-col items-center">
@@ -51,50 +51,25 @@ export default function AddExerciseForm() {
           quantityJump={2.5}
           onValueChange={handleWeightChanged}
         />
-        <div className="flex flex-col gap-3 w-80">
-          <div className="text-xs border-b font-bold pb-1 border-blue-400">
-            REPS
-          </div>
-          <div className="flex flex-row self-center">
-            <span className="flex flex-row items-center gap-5">
-              <button
-                onClick={decrementReps}
-                className="w-8 h-8 bg-gray-500 text-xl"
-              >
-                -
-              </button>
-              <input
-                className="bg-transparent border-b text-center text-xl w-24"
-                type="number"
-                name="reps"
-                value={reps}
-                onChange={(e) => setReps(Number(e.target.value))}
-              />
-              <input type="hidden" name="sessionId" />
-              <button
-                onClick={incrementReps}
-                className="w-8 h-8 bg-gray-500 text-xl"
-              >
-                +
-              </button>
-            </span>
-          </div>
-        </div>
+        <NumberInput
+          initialValue={0}
+          quantityName={"reps"}
+          quantityUnit={""}
+          quantityPrecision={0}
+          quantityJump={1}
+          onValueChange={handleRepsChanged}
+        />
+
         <div className="flex flex-row gap-2">
           <button
-            // formAction={async (formData) => {
-            //   // await handleAddSet(formData);
-            // }}
             className="flex-1 bg-green-700 py-1 rounded-sm font-bold"
+            onClick={handleClickConfirm}
           >
-            SAVE
+            {modalMode === "update" ? "SAVE" : "ADD"}
           </button>
 
-          <button
-            // onClick={resetForm}
-            className="flex-1 bg-blue-700 py-1 rounded-sm font-bold"
-          >
-            CLEAR
+          <button className="flex-1 bg-blue-700 py-1 rounded-sm font-bold">
+            CANCEL
           </button>
         </div>
       </div>

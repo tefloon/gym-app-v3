@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 type NumberInputType = {
   quantityName: string;
-  quantityUnit: string;
+  quantityUnit?: string;
   initialValue: number;
   quantityPrecision: number;
   quantityJump: number;
@@ -10,6 +10,7 @@ type NumberInputType = {
 };
 
 // IDEA: Add quantityPrecision and other such things to preferences saved in DB
+// [ ]:  Add different types of input (time etc.)
 export default function NumberInput({
   quantityName,
   quantityUnit,
@@ -23,13 +24,18 @@ export default function NumberInput({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // When entereing editMode, focus the input and make it empty
     if (editMode && inputRef.current) {
       inputRef.current.value = "";
       inputRef.current.focus();
     }
-    if (!editMode && inputRef.current) {
-      setValue(Number(inputRef.current.value));
+
+    // When exiting ediTmore, save the inputted value
+    // That's better than controlling the value of the field because we re-render only once
+    if (!editMode) {
+      onValueChange(value);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editMode]);
 
   useEffect(() => {
@@ -57,6 +63,11 @@ export default function NumberInput({
     };
   }, [editMode]);
 
+  const setValueManually = (newValue: number) => {
+    setValue(newValue);
+    onValueChange(newValue);
+  };
+
   const decrement = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setValue((preValue) => preValue - quantityJump);
@@ -72,7 +83,7 @@ export default function NumberInput({
   return (
     <div className="flex flex-col gap-3 w-80 dont-close">
       <div className="text-xs border-b font-bold pb-1 border-blue-400">
-        {quantityName.toUpperCase()} ({quantityUnit})
+        {quantityName.toUpperCase()} {quantityUnit && `(${quantityUnit})`}
       </div>
       <div className="flex flex-row self-center">
         <span className="flex flex-row items-center gap-5">
@@ -93,7 +104,7 @@ export default function NumberInput({
               className="bg-transparent border-b text-center text-xl w-24 dont-close"
               onClick={() => setEditMode(true)}
             >
-              {(Math.round(value * 100) / 100).toFixed(2)}
+              {(Math.round(value * 100) / 100).toFixed(quantityPrecision)}
             </div>
           )}
 

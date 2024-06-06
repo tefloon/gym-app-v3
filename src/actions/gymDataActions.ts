@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
 import { createId } from "@paralleldrive/cuid2";
+import { ExerciseSet } from "@prisma/client";
 
 import { revalidatePath } from "next/cache";
 import { translateError } from "./prismaErrorHandler";
@@ -70,6 +71,30 @@ export const handleReturnWorkoutDates = async () => {
   });
   const dates = workoutDates?.map((date) => date.date);
   return dates;
+};
+
+// ExerciseInstance handlers
+// ==========================
+export const handleAddSetToExerciseInstance = async (
+  exerciseInstanceId: string,
+  newSet: Prisma.ExerciseSetCreateWithoutExerciseInstanceInput
+) => {
+  try {
+    const updatedExerciseInstance = await prisma.exerciseInstance.update({
+      where: { id: exerciseInstanceId },
+      data: {
+        sets: {
+          create: newSet,
+        },
+      },
+      include: {
+        sets: true, // Optionally include sets to verify the addition
+      },
+    });
+    console.log("Successfully added a new set:", updatedExerciseInstance);
+  } catch (error) {
+    console.error("Error adding new set:", error);
+  }
 };
 
 // Workout ExerciseType handlers

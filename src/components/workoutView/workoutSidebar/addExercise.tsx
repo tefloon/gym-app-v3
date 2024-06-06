@@ -9,6 +9,7 @@ import { handleReturnExerciseTypes } from "@/actions/gymDataActions";
 import { Option } from "@/lib/types";
 import { useAtom } from "jotai";
 import { instanceWithDetailsAtom, modalModeAtom } from "@/jotai/atoms";
+import InstanceDetailsUpdate from "./instanceDetailsUpdate";
 
 export default function AddExercise() {
   // Query all the exercise types - maybe before the main page loads? 🗹
@@ -22,7 +23,6 @@ export default function AddExercise() {
   const [chosenType, setChosenType] = useState<PrismaExerciseType | null>(null);
   const [types, setTypes] = useState<PrismaExerciseType[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
 
   useEffect(() => {
@@ -72,11 +72,11 @@ export default function AddExercise() {
     return <div>Error: {error}</div>;
   }
 
-  if (modalMode === "update" && instance) {
+  if (modalMode === "update") {
     return (
       <div className="flex flex-col gap-10 items-center">
         <AddExerciseForm />
-        <InstanceDetails {...instance} />
+        <InstanceDetailsUpdate />
       </div>
     );
   }

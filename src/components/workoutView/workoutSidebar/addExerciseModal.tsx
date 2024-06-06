@@ -2,11 +2,16 @@ import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 import AddExercise from "./addExercise";
 import { useAtom } from "jotai";
-import { modalOpenAtom, modalModeAtom } from "@/jotai/atoms";
+import {
+  modalOpenAtom,
+  modalModeAtom,
+  instanceWithDetailsAtom,
+} from "@/jotai/atoms";
 
 export default function AddExerciseModal() {
   const [isModalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
+  const [selectedInstance] = useAtom(instanceWithDetailsAtom);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +58,9 @@ export default function AddExerciseModal() {
       {/* [ ]: Add canimation to hide the switch from "add" to "update". Framer-motion variants. */}
       <div className="p-4">
         <h2 className="text-xl font-bold mb-4 text-center">
-          {modalMode === "add" ? "Add Exercise" : "Update Exercise"}
+          {modalMode === "add"
+            ? "Add Exercise"
+            : `${selectedInstance?.exerciseType.name}`}
         </h2>
         <AddExercise />
       </div>

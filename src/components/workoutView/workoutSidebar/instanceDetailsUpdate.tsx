@@ -8,23 +8,15 @@ import {
   modalModeAtom,
 } from "@/jotai/atoms";
 
-export default function InstanceDetailsUpdate(instance: InstanceWithDetails) {
-  const handleSelectInstance = () => {
-    console.log("Selo!");
-    // setSelectedInstance(instance);
-    // setModalMode("update");
-    // setIsModalOpen(true);
-  };
+export default function InstanceDetailsUpdate() {
+  const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
 
-  if (instance.sets.length === 0 || !instance.sets) {
+  if (!instance || instance.sets.length === 0 || !instance.sets) {
     return <div>No sets to show...</div>;
   }
 
   return (
-    <div className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4">
-      {/* <div>
-        <h3 className="text-2xl p-4">{instance.exerciseType.name}</h3>
-      </div> */}
+    <div className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 py-4">
       <div className="flex flex-col gap-2 w-full">
         {instance.sets.map((set, id) => (
           <SetDetails

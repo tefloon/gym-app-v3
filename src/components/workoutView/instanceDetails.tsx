@@ -26,20 +26,24 @@ export default function InstanceDetails(instance: InstanceWithDetails) {
   // [ ]: Maybe add a cogwheel icon or something for changing the instance
   return (
     <div
-      className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 pb-4 hover:bg-slate-900 cursor-pointer dont-close"
+      className="flex flex-col items-center w-full bg-slate-800 rounded-xl px-4 py-4 hover:bg-slate-900 cursor-pointer dont-close"
       onClick={handleSelectInstance}
     >
       <div>
-        <h3 className="text-2xl p-4">{instance.exerciseType.name}</h3>
+        <h3 className="text-xl font-bold mb-4 text-center">
+          {instance.exerciseType.name}
+        </h3>
       </div>
       <div className="flex flex-col gap-2 w-full">
-        {instance.sets.map((set, id) => (
-          <SetDetails
-            key={set.id}
-            set={set}
-            loadType={instance.exerciseType.loadingType}
-          />
-        ))}
+        {instance.sets
+          .sort((a, b) => a.order - b.order)
+          .map((set, id) => (
+            <SetDetails
+              key={set.id}
+              set={set}
+              loadType={instance.exerciseType.loadingType}
+            />
+          ))}
       </div>
     </div>
   );

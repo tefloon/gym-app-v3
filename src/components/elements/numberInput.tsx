@@ -63,21 +63,21 @@ export default function NumberInput({
     };
   }, [editMode]);
 
+  useEffect(() => {
+    onValueChange(value);
+  }, [value]);
+
   const setValueManually = (newValue: number) => {
     setValue(newValue);
     onValueChange(newValue);
   };
 
-  const decrement = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const decrement = () => {
     setValue((preValue) => preValue - quantityJump);
-    onValueChange(value);
   };
 
-  const increment = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const increment = () => {
     setValue((preValue) => preValue + quantityJump);
-    onValueChange(value);
   };
 
   return (
@@ -97,14 +97,15 @@ export default function NumberInput({
               name={quantityName}
               ref={inputRef}
               value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
+              onChange={(e) => setValueManually(Number(e.target.value))}
             />
           ) : (
             <div
               className="bg-transparent border-b text-center text-xl w-24 dont-close"
               onClick={() => setEditMode(true)}
             >
-              {(Math.round(value * 100) / 100).toFixed(quantityPrecision)}
+              {/* {(Math.round(value * 100) / 100).toFixed(quantityPrecision)} */}
+              {value}
             </div>
           )}
 

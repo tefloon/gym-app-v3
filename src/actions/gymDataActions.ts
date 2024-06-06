@@ -88,12 +88,23 @@ export const handleAddSetToExerciseInstance = async (
         },
       },
       include: {
-        sets: true, // Optionally include sets to verify the addition
+        sets: true,
+        exerciseType: {
+          include: {
+            category: true,
+            loadingType: true,
+          },
+        },
       },
     });
+
     console.log("Successfully added a new set:", updatedExerciseInstance);
-  } catch (error) {
-    console.error("Error adding new set:", error);
+    return updatedExerciseInstance;
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      return new Error(translateError(e));
+    }
+    throw e;
   }
 };
 

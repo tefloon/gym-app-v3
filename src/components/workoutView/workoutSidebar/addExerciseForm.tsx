@@ -14,20 +14,21 @@ export default function AddExerciseForm() {
   const [values, setValues] = useState([0, 0]);
 
   const handleWeightChanged = (newValue: number) => {
-    console.log(`New weight: ${newValue}`);
     setValues((prev) => [newValue, prev[1]]);
+    console.log(`New weight: ${newValue}`);
   };
 
   const handleRepsChanged = (newValue: number) => {
-    console.log(`New reps: ${newValue}`);
     setValues((prev) => [prev[0], newValue]);
+    console.log(`New reps: ${newValue}`);
   };
 
   // When clicking ADD we:
   // - create a new Set
   // - send it to a server action to append the instance
 
-  const handleClickConfirm = () => {
+  // [ ]: Add optimistic update to that
+  const handleClickConfirm = async () => {
     if (modalMode === "update" && instance) {
       const newSet = {
         id: createId(),
@@ -36,7 +37,18 @@ export default function AddExerciseForm() {
         load: ` ${values[0]}x${values[1]} `,
       };
 
-      handleAddSetToExerciseInstance(instance.id, newSet);
+      try {
+        const res = await handleAddSetToExerciseInstance(instance.id, newSet);
+        if (!res) return;
+        if (res instanceof Error) {
+          console.log(res.message);
+          // [ ]: we need to revalidate the list of sets with old value somehow
+          return;
+        }
+        setInstance(res);
+      } catch (e) {
+        console.log("Something went wrong");
+      }
     }
   };
 

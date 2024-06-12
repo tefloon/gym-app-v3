@@ -13,7 +13,9 @@ import InstanceDetailsUpdate from "./instanceDetailsUpdate";
 export default function AddExerciseModal() {
   const [isModalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
-  const [selectedInstance] = useAtom(instanceWithDetailsAtom);
+  const [selectedInstance, setSelectedInstance] = useAtom(
+    instanceWithDetailsAtom
+  );
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +30,7 @@ export default function AddExerciseModal() {
         !modalRef.current.contains(target)
       ) {
         setIsModalOpen(false);
+        setSelectedInstance(null);
         setModalMode("add");
       }
     };
@@ -46,7 +49,7 @@ export default function AddExerciseModal() {
       document.removeEventListener("click", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isModalOpen, setIsModalOpen, setModalMode]);
+  }, [isModalOpen, setIsModalOpen, setModalMode, setSelectedInstance]);
 
   return (
     <motion.div

@@ -9,6 +9,7 @@ import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useAtom } from "jotai";
 import {
   dateAtom,
+  instanceWithDetailsAtom,
   modalModeAtom,
   modalOpenAtom,
   workoutWithDetailsAtom,
@@ -28,6 +29,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
   const [, setWorkout] = useAtom(workoutWithDetailsAtom);
   const [pending, startTransition] = useTransition();
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
+  const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
 
   const fetchWorkout = async (date: Date) => {
     // console.log("Fetching the workout");
@@ -68,8 +70,9 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
       // console.log("The same!");
       return;
     }
-    fetchWorkout(date);
+    setInstance(null);
     setPickedDate(date);
+    fetchWorkout(date);
   };
 
   const handleAddInstance = () => {

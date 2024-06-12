@@ -63,6 +63,29 @@ export const handleReturnWorkoutByDate = async (inputDate: Date) => {
   return workout;
 };
 
+export const handleReturnWorkoutById = async (id: string) => {
+  const workout = await prisma.workout.findFirst({
+    where: {
+      id: id,
+    },
+    include: {
+      exerciseInstances: {
+        include: {
+          sets: true,
+          exerciseType: {
+            include: {
+              category: true,
+              loadingType: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return workout;
+};
+
 export const handleReturnWorkoutDates = async () => {
   const workoutDates = await prisma.workout.findMany({
     select: {

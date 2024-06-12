@@ -24,8 +24,11 @@ export default function SetDetails({ set, loadType }: SetDetailsProps) {
     >
       <span className="px-4">{set.order}</span>
       <span className="text-center grow font-semibold">{loadString}</span>
-      <span className="pl-4 text-2xl text-green-500 cursor-pointer">
+      {/* <span className="pl-4 text-2xl text-green-500 cursor-pointer">
         {set.wasCompleted ? "🗹" : "☐"}
+      </span> */}
+      <span>
+        <input type="checkbox" checked={set.wasCompleted} name="wasCompleted" id="" />
       </span>
     </div>
   );

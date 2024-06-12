@@ -1,8 +1,15 @@
 "use client";
 
-import { handleAddSetToExerciseInstance } from "@/actions/gymDataActions";
+import {
+  handleAddSetToExerciseInstance,
+  handleReturnWorkoutById,
+} from "@/actions/gymDataActions";
 import NumberInput from "@/components/elements/numberInput";
-import { instanceWithDetailsAtom, modalModeAtom } from "@/jotai/atoms";
+import {
+  instanceWithDetailsAtom,
+  modalModeAtom,
+  workoutWithDetailsAtom,
+} from "@/jotai/atoms";
 import { createId } from "@paralleldrive/cuid2";
 import { useAtom } from "jotai";
 import React, { useOptimistic, useState } from "react";
@@ -10,7 +17,8 @@ import React, { useOptimistic, useState } from "react";
 export default function AddExerciseForm() {
   const [modalMode, setModalMode] = useAtom(modalModeAtom);
   const [instance, setInstance] = useAtom(instanceWithDetailsAtom);
-  const [instanceOptimistic, setInstanceOptimistic] = useOptimistic(instance);
+  const [workout, setWorkout] = useAtom(workoutWithDetailsAtom);
+  // const [instanceOptimistic, setInstanceOptimistic] = useOptimistic(instance);
 
   const [values, setValues] = useState([0, 0]);
 
@@ -38,15 +46,15 @@ export default function AddExerciseForm() {
         load: ` ${values[0]}x${values[1]} `,
       };
 
-      let newSetWithID = {
-        ...newSet,
-        exerciseInstanceId: instance.id,
-      };
+      // let newSetWithID = {
+      //   ...newSet,
+      //   exerciseInstanceId: instance.id,
+      // };
 
-      const newInstance = structuredClone(instance);
-      newInstance.sets = [...newInstance.sets, newSetWithID];
+      // const newInstance = structuredClone(instance);
+      // newInstance.sets = [...newInstance.sets, newSetWithID];
 
-      setInstanceOptimistic(newInstance);
+      // setInstanceOptimistic(newInstance);
 
       try {
         const res = await handleAddSetToExerciseInstance(instance.id, newSet);
@@ -57,6 +65,9 @@ export default function AddExerciseForm() {
           return;
         }
         setInstance(res);
+        if (!workout) return;
+        const updatedWorkout = await handleReturnWorkoutById(workout.id);
+        setWorkout(updatedWorkout);
       } catch (e) {
         console.log("Something went wrong");
       }

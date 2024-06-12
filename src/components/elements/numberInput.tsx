@@ -65,7 +65,7 @@ export default function NumberInput({
 
   useEffect(() => {
     onValueChange(value);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const setValueManually = (newValue: number) => {
@@ -105,8 +105,8 @@ export default function NumberInput({
               className="bg-transparent border-b text-center text-xl w-24 dont-close"
               onClick={() => setEditMode(true)}
             >
-              {/* {(Math.round(value * 100) / 100).toFixed(quantityPrecision)} */}
-              {value}
+              {(Math.round(value * 100) / 100).toFixed(quantityPrecision)}
+              {/* {value} */}
             </div>
           )}
 

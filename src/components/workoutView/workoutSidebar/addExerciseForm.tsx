@@ -38,6 +38,16 @@ export default function AddExerciseForm() {
         load: ` ${values[0]}x${values[1]} `,
       };
 
+      let newSetWithID = {
+        ...newSet,
+        exerciseInstanceId: instance.id,
+      };
+
+      const newInstance = structuredClone(instance);
+      newInstance.sets = [...newInstance.sets, newSetWithID];
+
+      setInstanceOptimistic(newInstance);
+
       try {
         const res = await handleAddSetToExerciseInstance(instance.id, newSet);
         if (!res) return;

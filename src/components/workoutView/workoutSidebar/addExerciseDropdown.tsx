@@ -11,7 +11,7 @@ import { useAtom } from "jotai";
 import { instanceWithDetailsAtom, modalModeAtom } from "@/jotai/atoms";
 import InstanceDetailsUpdate from "./instanceDetailsUpdate";
 
-export default function AddExercise() {
+export default function AddExerciseDropdown() {
   // Query all the exercise types - maybe before the main page loads? 🗹
   // Populate the dropdown with them 🗹
   // Chose what kind of exercise - dropdown
@@ -73,20 +73,15 @@ export default function AddExercise() {
   }
 
   if (modalMode === "update") {
-    return (
-      <div className="flex flex-col gap-10 items-center">
-        
-        <InstanceDetailsUpdate />
-      </div>
-    );
+    return;
   }
 
+  // [ ]: use the saved (local storage?) exercise type as the default
   return (
-    <div className="flex flex-col gap-10 items-center">
+    <div className="flex flex-col gap-10 items-center w-full px-4 pb-4">
       {options && (
         <MyDropdown handleChooseOption={handleChooseOption} options={options} />
       )}
-      {chosenType && <AddExerciseForm />}
     </div>
   );
 }

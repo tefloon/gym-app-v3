@@ -20,7 +20,7 @@ export default function MyDropdown({
   // const dropdownClasses = ``
 
   return (
-    <div className="flex flex-col items-center max-w-[300px] w-full">
+    <div className="flex flex-col items-center w-full">
       <select
         id="category-select"
         onChange={handleChange}

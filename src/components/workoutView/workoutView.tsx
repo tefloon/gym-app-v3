@@ -106,6 +106,7 @@ export default function WorkoutView({ dates }: WorkoutViewProps) {
             <MyCustomButton
               handleClick={handleAddInstance}
               className="dont-close"
+              isActive={!isModalOpen}
             />
           </LayoutGroup>
         </AnimatePresence>

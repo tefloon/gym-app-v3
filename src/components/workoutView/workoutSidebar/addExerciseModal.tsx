@@ -1,6 +1,6 @@
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import AddExercise from "./addExercise";
+import AddExerciseDropdown from "./addExerciseDropdown";
 import { useAtom } from "jotai";
 import {
   modalOpenAtom,
@@ -8,6 +8,7 @@ import {
   instanceWithDetailsAtom,
 } from "@/jotai/atoms";
 import AddExerciseForm from "./addExerciseForm";
+import InstanceDetailsUpdate from "./instanceDetailsUpdate";
 
 export default function AddExerciseModal() {
   const [isModalOpen, setIsModalOpen] = useAtom(modalOpenAtom);
@@ -56,17 +57,18 @@ export default function AddExerciseModal() {
       className="fixed top-0 right-0 h-full min-w-[500px] bg-slate-800 shadow-lg z-50 rounded-l-lg max-h-screen  overflow-y-auto"
       ref={modalRef}
     >
-      {/* [ ]: Add canimation to hide the switch from "add" to "update". Framer-motion variants. */}
+      {/* [ ]: Add animation to hide the switch from "add" to "update". Framer-motion variants. */}
       <div className="h-full flex flex-col">
-        <div className="flex sticky top-0 flex-col items-center p-4 mb-4 bg-slate-800">
-          <h2 className="text-xl font-bold mb-4 text-center">
-            {modalMode === "add"
-              ? "Add Exercise"
-              : `${selectedInstance?.exerciseType.name}`}
-          </h2>
+        <h2 className="text-xl font-bold text-center py-4">
+          {modalMode === "add"
+            ? "Add Exercise"
+            : `${selectedInstance?.exerciseType.name}`}
+        </h2>
+        <div className="flex sticky top-0 flex-col items-center bg-slate-800">
+          <AddExerciseDropdown />
           <AddExerciseForm />
+          <InstanceDetailsUpdate />
         </div>
-        <AddExercise />
       </div>
     </motion.div>
   );
